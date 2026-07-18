@@ -28,8 +28,8 @@
 
 | Use | URL |
 |-----|-----|
-| Default invoice rail | `https://paypal.me/trefongwork` |
-| Pro $12/mo checkout | `https://paypal.me/trefongwork/12` |
+| Default invoice rail | `https://paypal.me/trefong217` |
+| Pro $12/mo checkout | `https://paypal.me/trefong217/12` |
 
 Confirm this is **your** PayPal.me slug (PayPal → Settings → PayPal.me). If different, update Vercel env and redeploy.
 

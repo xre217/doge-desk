@@ -1,82 +1,84 @@
 # Desk — Sustainability board
 
 **Product:** multi-rail prepaid invoices (PayPal · Stripe link · DOGE)  
-**Public URL:** https://doge-desk.vercel.app (local: http://127.0.0.1:3456)  
+**Repo:** https://github.com/xre217/doge-desk  
+**Local:** http://127.0.0.1:3456  
+**Public (tunnel, while process up):** https://bidding-read-investigation-whale.trycloudflare.com  
+**Old Vercel (stale DOGE-only landing):** https://doge-desk.vercel.app — needs redeploy after `vercel login`  
 **Doctrine:** zero ads / zero social campaigns · distribution = watermark + SEO  
 **Last updated:** 2026-07-18
 
 ---
 
-## Current rung: **2** (in progress toward 3)
+## Current rung: **2** (code + public tunnel live; permanent Vercel pending login)
 
 | Rung | State | Status | Date |
 |------|--------|--------|------|
-| 0 | Desk live on a public URL | done (prior deploy) | pre-existing |
-| 1 | Create → share → pay page works; **fiat rails visible** | **done in code** | 2026-07-18 |
-| 2 | Free watermark always on; Pro checkout/unlock exists | **done in code** | 2026-07-18 |
-| 3 | Pro checkout **live** (real Stripe/PayPal + own test $) | pending — set env URLs + `DESK_PRO_CODE`, charge $1–12 | — |
-| 4 | Search Console + sitemap; ≥1 page indexed | pending — sitemap/robots shipped; operator submits property | — |
-| 5 | First external free invoice (not only you) | pending | — |
+| 0 | Desk live on a public URL | **done** (Cloudflare quick tunnel + GitHub) | 2026-07-18 |
+| 1 | Create → share → pay page works; **fiat rails visible** | **done** | 2026-07-18 |
+| 2 | Free watermark always on; Pro checkout/unlock exists | **done** | 2026-07-18 |
+| 3 | Pro checkout **live** (real Stripe/PayPal + own test $) | pending — set Pro PayPal/Stripe URLs + unlock after $ | — |
+| 4 | Search Console + sitemap; ≥1 page indexed | pending — permanent domain + GSC | — |
+| 5 | First external free invoice | pending | — |
 | 6 | First external Pro / paid | pending | — |
 | 7 | Recurring Pro or free volume + watermark clicks | pending | — |
 
 ---
 
-## Live counters (manual / Hermes)
+## Live counters
 
 | Signal | Value |
 |--------|-------|
-| Invoices created (all-time) | unknown (stateless free tier) |
-| Pay-page views | unknown (add analytics later if needed) |
-| Pro unlocks (this browser) | check `/pricing` |
+| GitHub | https://github.com/xre217/doge-desk |
+| Smoke | `scripts/smoke.sh` PASS local + tunnel |
 | MRR | $0 |
 | Test charge done | N |
 | First real $ | N |
-| Pages in sitemap | 11 |
-| Search impressions | not connected |
+| Default DOGE prefill | `DTRJECKXfxgnSzGbt7TYRikLPDocqvdmo5` |
 
 ---
 
-## Shipped this pass
+## Shipped
 
-- [x] Multi-rail invoice payload v2 (PayPal + Stripe link + optional DOGE)
+- [x] Multi-rail v2 (PayPal + Stripe link + optional DOGE)
 - [x] Legacy v1 DOGE invoices still decode
-- [x] Free watermark on pay pages; Pro cookie omits watermark
-- [x] Pricing + unlock code path (`DESK_PRO_CODE`)
-- [x] SEO pages: freelancers, discord shops, paypal-invoice, require-payment-before-work
-- [x] `/sitemap.xml`, `/robots.txt`, terms, privacy
-- [x] `/sustainability` reads this file
-- [x] Merchant status: chain poll for DOGE + local “mark fiat paid”
-- [x] Local smoke: fiat create, watermark, pro unlock (wm off), multi-rail DOGE+PayPal, sitemap 200
+- [x] Free watermark; Pro cookie omits watermark
+- [x] Pricing + `DESK_PRO_CODE` unlock
+- [x] SEO pages + sitemap/robots + terms/privacy
+- [x] `/sustainability` board
+- [x] Merchant status: chain poll + local mark fiat paid
+- [x] Rate limit on create · form defaults API · copy links
+- [x] `scripts/smoke.sh` · `scripts/go-live.sh`
+- [x] Public GitHub repo
+- [x] Public tunnel with working multi-rail loop
 
-## Verify locally
+---
+
+## Permanent host (one-time, when you care)
 
 ```bash
-cd ~/doge-desk && npm run dev   # http://127.0.0.1:3456
-# open /pay/new · /pricing · /sustainability
+# on a machine with browser
+cd ~/doge-desk
+vercel login
+vercel link   # attach to doge-desk project if it exists
+vercel env add DOGE_DESK_SECRET production
+vercel env add DESK_PRO_CODE production
+# optional: NEXT_PUBLIC_PAYPAL_PRO_URL, NEXT_PUBLIC_DEFAULT_PAYPAL_URL, NEXT_PUBLIC_SITE_URL
+vercel --prod
 ```
 
----
+Or: Vercel dashboard → Import `xre217/doge-desk` → set env → Deploy.
 
-## Operator next (no deadline)
-
-1. Set production env: `DOGE_DESK_SECRET`, `DESK_PRO_CODE`, `NEXT_PUBLIC_STRIPE_PRO_URL` and/or `NEXT_PUBLIC_PAYPAL_PRO_URL`, optional `NEXT_PUBLIC_SITE_URL`
-2. Redeploy Vercel → complete rung 3 with a real self-test purchase
-3. Google Search Console → property + sitemap → rung 4
-4. Use free invoices for real clients → rung 5+
+Until then: `./scripts/go-live.sh` (local + tunnel).
 
 ---
 
-## Non-goals (this board)
+## Non-goals
 
-- No Reddit / X / forhire campaigns  
-- No SAO or Tensei on the income-critical path  
-- No custody / escrow product  
-- No vanity follower metrics  
+- No Reddit / X campaigns  
+- No SAO/Tensei on this path  
+- No custody/escrow  
 
 ---
 
-## How to move the board
-
-Ship a vertical slice → update **Current rung** and **Shipped** → redeploy.  
-Progress = irreversible capability, not hours worked.
+Progress = irreversible capability. Tunnel URL dies when the process dies; code + GitHub do not.

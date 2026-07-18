@@ -11,6 +11,24 @@ import type { InvoicePayloadV2 } from "@/lib/types";
 
 export const runtime = "nodejs";
 
+/** Prefer env / reverse-proxy headers so pay links work behind tunnels & Vercel. */
+function publicOrigin(req: NextRequest): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  if (configured) return configured;
+
+  const xfHost = req.headers.get("x-forwarded-host");
+  const xfProto = req.headers.get("x-forwarded-proto") || "https";
+  if (xfHost) return `${xfProto.split(",")[0].trim()}://${xfHost.split(",")[0].trim()}`;
+
+  const host = req.headers.get("host");
+  if (host && !host.startsWith("localhost") && !host.startsWith("127.0.0.1")) {
+    const proto = xfProto.split(",")[0].trim() || "https";
+    return `${proto}://${host}`;
+  }
+
+  return req.nextUrl.origin;
+}
+
 export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -128,7 +146,7 @@ export async function POST(req: NextRequest) {
 
   const id = encodeInvoice(payload);
   const token = merchantToken(id);
-  const origin = req.nextUrl.origin;
+  const origin = publicOrigin(req);
 
   return NextResponse.json({
     id,
